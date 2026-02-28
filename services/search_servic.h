@@ -3,6 +3,6 @@
 
 #include "../models/header.h"
 
-bool search_id(vector<Student> s);
+bool Find_id(const vector<Student> &list, int search_id);
 
 #endif

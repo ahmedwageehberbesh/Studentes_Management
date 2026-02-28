@@ -1,20 +1,13 @@
 #include "../models/header.h"
 
-bool search_id(vector<Student> s)
+bool Find_id(const vector<Student> &list, int search_id)
 {
-    vector<int> ids;
-    for (int i = 0; i < s.size(); i++)
+    for (int i = 0; i < list.size(); i++)
     {
-
-        for (int j = 0; j < ids.size(); j++)
+        if (list[i].id == search_id)
         {
-            if (s[i].id == ids[j])
-            {
-                return true;
-            }
+            return true;
         }
-
-        ids.push_back(s[i].id);
     }
     return false;
 }

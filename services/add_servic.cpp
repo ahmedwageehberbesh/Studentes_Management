@@ -2,13 +2,19 @@
 
 using namespace std;
 
-void add_Student(Student &S, vector<Student> Student)
+void add_Student(Student &S, vector<Student> &Student)
 {
-    do
+    int temp_id;
+    while (true)
     {
         cout << "\nEnter ID : ";
-        cin >> S.id;
-    } while (search_id(Student));
+        cin >> temp_id;
+        if (!Find_id(Student, temp_id))
+        {
+            S.id = temp_id;
+            break;
+        }
+    }
     cout << "Enter Name: ";
     cin.ignore();
     getline(cin, S.name);
@@ -16,5 +22,5 @@ void add_Student(Student &S, vector<Student> Student)
     cin >> S.age;
     cout << "Enter Level: ";
     cin.ignore();
-    getline(cin, S.studey_level);
+    getline(cin, S.study_level);
 }

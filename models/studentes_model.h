@@ -1,5 +1,5 @@
-#ifndef STUDENTES_MODEL_H
-#define STUDENTES_MODEL_H
+#ifndef STUDENTS_MODEL_H
+#define STUDENTS_MODEL_H
 
 
 
@@ -9,7 +9,7 @@ struct Student
 {
     int id;
     string name;
-    string studey_level;
+    string study_level;
     int age;
 };
 

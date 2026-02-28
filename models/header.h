@@ -1,5 +1,5 @@
-#ifndef HEADR_H
-#define HEADR_H
+#ifndef HEARD_H
+#define HEARD_H
 
 #include <string>
 #include <iostream>

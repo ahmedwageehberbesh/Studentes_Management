@@ -10,6 +10,15 @@ void Show_Student_data(vector<Student> students)
         cout << students[i].id << "|"
              << students[i].name << "|"
              << students[i].age << "|"
-             << students[i].studey_level << endl;
+             << students[i].study_level << endl;
     }
+}
+void Show_one_Student_data(Student students)
+{
+    cout << "ID     |Name   |Age   |Level\n";
+
+    cout << students.id << "|"
+         << students.name << "|"
+         << students.age << "|"
+         << students.study_level << endl;
 }
