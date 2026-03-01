@@ -13,8 +13,9 @@ struct Student
 
 struct course
 {
-    string course;
+    string course_name;
     double grade;
+    int credits;
 };
 
 #endif
