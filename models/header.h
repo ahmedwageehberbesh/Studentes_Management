@@ -15,12 +15,12 @@ using namespace std;
 #include "../models/studentes_model.h"
 
 // 3.  (Services)
-#include "../services/add_servic.h"
-#include "../services/show_servic.h"
-#include "../services/search_servic.h"
-#include "../services/srot_servic.h"
-#include "../services/delete_servic.h"
-#include "../services/update_servic.h"
+#include "../services/CRUD_service/add_servic.h"
+#include "../services/CRUD_service/show_servic.h"
+#include "../services/CRUD_service/search_servic.h"
+#include "../services/CRUD_service/srot_servic.h"
+#include "../services/CRUD_service/delete_servic.h"
+#include "../services/CRUD_service/update_servic.h"
 #include "../services/saveing_service/saveing_service.h"
 
 #endif

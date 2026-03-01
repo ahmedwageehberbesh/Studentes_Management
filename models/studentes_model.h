@@ -1,8 +1,6 @@
 #ifndef STUDENTS_MODEL_H
 #define STUDENTS_MODEL_H
 
-
-
 using namespace std;
 
 struct Student
