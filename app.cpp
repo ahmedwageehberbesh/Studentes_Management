@@ -14,12 +14,25 @@ void run()
         cout << "\n2. Show Student";
         cout << "\n3. Search Student";
         cout << "\n4. Delete Student";
+        cout << "\n5. Update Student";
+        cout << "\n6. Save Data";
+        cout << "\n7. import Data";
         cout << "\n0. Exit";
         cout << "\nChoice: ";
         cin >> choice;
 
         switch (choice)
         {
+
+        case 7:
+            import_from_csv(students);
+            break;
+        case 6:
+            export_to_csv(students);
+            break;
+        case 5:
+            update_service(students);
+            break;
         case 4:
             delete_service(students);
             break;

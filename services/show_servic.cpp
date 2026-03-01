@@ -17,10 +17,10 @@ void Show_Student_data(vector<Student> students)
     print_header();
     for (int i = 0; i < students.size(); i++)
     {
-        cout << students[i].id << "|"
-             << students[i].name << "|"
-             << students[i].age << "|"
-             << students[i].study_level << endl;
+        cout << left << setw(10) << students[i].id
+             << " | " << setw(15) << students[i].name
+             << " | " << setw(8) << students[i].age
+             << " | " << setw(10) << students[i].study_level << endl;
     }
 }
 void Show_one_Student_data(Student student)
