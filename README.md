@@ -36,9 +36,27 @@ StudentManagement/
 
 ## طريقة البناء والتشغيل
 
-1. قم بتجميع المشروع باستخدام مترجم C++ (مثل g++ أو clang++ أو MSVC)
-2. تأكد من تضمين جميع الملفات المصدرية في عملية البناء
-3. شغّل الملف التنفيذي الناتج
+### التجميع (Compile)
+
+**باستخدام g++ (MinGW / Linux / WSL):**
+
+```bash
+g++ main.cpp app.cpp services/CRUD_service/add_servic.cpp services/CRUD_service/show_servic.cpp services/CRUD_service/search_servic.cpp services/CRUD_service/delete_servic.cpp services/CRUD_service/update_servic.cpp services/CRUD_service/sort_servic.cpp services/saveing_service/saveing_service.cpp -o StudentManagement
+```
+
+### التشغيل (Run)
+
+```bash
+./StudentManagement
+```
+
+على **Windows** (PowerShell أو CMD):
+
+```bash
+.\StudentManagement.exe
+```
+
+> **ملاحظة:** نفّذ أوامر التجميع والتشغيل من مجلد المشروع `StudentManagement`.
 
 ## مخطط الانسياب — كيف يعمل التطبيق
 
