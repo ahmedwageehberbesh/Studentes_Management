@@ -2,7 +2,7 @@
 
 void print_header()
 {
-    cout << string(150, '=') << endl;
+    cout << string(180, '=') << endl;
     cout << left << setw(10) << "ID"
          << " | " << setw(15) << "Name"
          << " | " << setw(4) << "Age"
@@ -12,8 +12,9 @@ void print_header()
          << " | " << setw(18) << "Course 3 (G)"
          << " | " << setw(18) << "Course 4 (G)"
          << " | " << setw(18) << "Course 5 (G)"
-         << " | " << setw(6) << "GPA" << endl;
-    cout << string(150, '-') << endl;
+         << " | " << setw(6) << "GPA"
+         << " | " << setw(15) << "Rating" << endl;
+    cout << string(180, '-') << endl;
 }
 
 void Show_Student_data(vector<Student> students)
@@ -38,10 +39,12 @@ void Show_Student_data(vector<Student> students)
             cout << " | " << setw(18) << c_info;
         }
 
-        cout << " | " << setw(6) << fixed << setprecision(2) << s.gpa << endl;
+        cout << " | " << setw(6) << fixed << setprecision(2) << s.gpa
+             << " | " << setw(15) << get_rating(s.gpa) << endl;
     }
-    cout << string(150, '=') << endl;
+    cout << string(180, '=') << endl;
 }
+
 void Show_one_Student_data(Student s)
 {
     print_header();
@@ -57,6 +60,7 @@ void Show_one_Student_data(Student s)
         cout << " | " << setw(18) << c_info;
     }
 
-    cout << " | " << setw(6) << fixed << setprecision(2) << s.gpa << endl;
-    cout << string(150, '=') << endl;
+    cout << " | " << setw(6) << fixed << setprecision(2) << s.gpa
+         << " | " << setw(15) << get_rating(s.gpa) << endl;
+    cout << string(180, '=') << endl;
 }

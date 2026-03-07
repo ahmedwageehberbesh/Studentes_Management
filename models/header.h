@@ -28,7 +28,7 @@ using namespace std;
 #include "../services/saveing_service/saving_in_database.h"
 #include "../services/saveing_service/database_service.h"
 #include "../services/auth_service/auth_service.h"
-
+#include "../services/GPA_service/gpa_service.h"
 // 5.    (DataBase)
 #include "../database/database.h"
 

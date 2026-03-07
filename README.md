@@ -41,7 +41,7 @@ StudentManagement/
 **باستخدام g++ (MinGW / Linux / WSL):**
 
 ```bash
-g++ main.cpp app.cpp services/CRUD_service/add_servic.cpp services/CRUD_service/show_servic.cpp services/CRUD_service/search_servic.cpp services/CRUD_service/delete_servic.cpp services/CRUD_service/update_servic.cpp services/CRUD_service/sort_servic.cpp services/saveing_service/saveing_service.cpp -o StudentManagement
+g++ *.cpp services/CRUD_service/*.cpp services/saveing_service/*.cpp services/auth_service/*.cpp database/*.cpp .\services\GPA_service\*.cpp  sqlite3.o -o student_app.exe
 ```
 
 ### التشغيل (Run)
