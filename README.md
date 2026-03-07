@@ -1,159 +1,237 @@
-# نظام إدارة الطلاب
+# Student Management System
 
-تطبيق C++ يعمل من خلال واجهة الأوامر لإدارة سجلات الطلاب. يدعم إضافة وعرض وبحث وتحديث وحذف الطلاب، مع حفظ البيانات في ملفات CSV.
+A C++ console application for managing student records with SQLite database. Supports login, account creation, CRUD operations on students and courses, with role-based access (Admin/Staff).
 
-## المميزات
+## Features
 
-- **إضافة طالب** — إضافة طلاب جدد برقم هوية فريد، الاسم، العمر، والمستوى الدراسي
-- **عرض الطلاب** — عرض جميع الطلاب في جدول منسق
-- **بحث عن طالب** — البحث عن طالب برقم الهوية باستخدام البحث الثنائي
-- **حذف طالب** — إزالة طالب برقم الهوية
-- **تحديث طالب** — تعديل الاسم أو العمر أو المستوى الدراسي لطالب موجود
-- **حفظ البيانات** — تصدير جميع الطلاب إلى ملف `students_data.csv`
-- **استيراد البيانات** — تحميل الطلاب من ملف `students_data.csv`
+### Authentication
+- **Login** — Sign in with username and password
+- **Create Account** — Register new users with role (Admin/Staff)
+- **Role-based Access** — Admin can delete; Staff has limited permissions
 
-## هيكل المشروع
+### Student Management
+- **Add Student & Courses** — Add students with up to 5 courses and grades
+- **Show All Students** — Display students in formatted table with GPA and rating
+- **Search Student** — Search by ID in database
+- **Delete Student** — Remove student (Admin only)
+- **Update Student** — Modify name and age
+
+## Project Structure
 
 ```
 StudentManagement/
-├── main.cpp                 # نقطة البداية
-├── app.cpp                  # الحلقة الرئيسية والقائمة
+├── main.cpp                    # Entry point
+├── app.cpp                     # Main loop, menu, auth flow
 ├── models/
-│   ├── header.h             # الهيدر الرئيسي (يضم كل التبعيات)
-│   └── studentes_model.h    # هياكل بيانات الطالب والمقرر
+│   ├── header.h                # Main header (all dependencies)
+│   └── studentes_model.h       # Student & Course structs
+├── database/
+│   ├── database.cpp/h          # DB initialization (create tables)
 ├── services/
 │   ├── CRUD_service/
-│   │   ├── add_servic.cpp/h     # إضافة طالب
-│   │   ├── show_servic.cpp/h    # عرض الطلاب
-│   │   ├── search_servic.cpp/h  # البحث برقم الهوية
-│   │   ├── delete_servic.cpp/h  # حذف طالب
-│   │   ├── update_servic.cpp/h  # تحديث طالب
-│   │   └── sort_servic.cpp/h    # الترتيب برقم الهوية
-│   └── saveing_service/
-│       └── saveing_service.cpp/h  # استيراد/تصدير CSV
-└── students_data.csv        # ملف تخزين البيانات
+│   │   ├── add_servic.cpp/h       # Add student + courses
+│   │   ├── show_servic.cpp/h      # Display students
+│   │   ├── search_servic.cpp/h    # Search by ID
+│   │   ├── delete_servic.cpp/h    # Delete student
+│   │   ├── update_servic.cpp/h    # Update student
+│   │   └── sort_servic.cpp/h      # Sort by ID
+│   ├── saveing_service/
+│   │   ├── saveing_service.cpp/h     # CSV import/export
+│   │   ├── saving_in_database.cpp/h  # Save student to DB
+│   │   ├── load_service.cpp         # Load students from DB
+│   │   ├── update_servic.cpp        # Update student in DB
+│   │   └── database_service.h       # load_students, update_student
+│   ├── auth_service/
+│   │   └── auth_service.cpp/h    # Login, register
+│   └── GPA_service/
+│       └── gpa_service.cpp/h     # GPA calculation, rating
+├── sqlite3/
+│   └── sqlite3.c/h              # SQLite
+└── students_data.csv            # CSV backup
 ```
 
-## طريقة البناء والتشغيل
+## Build & Run
 
-### التجميع (Compile)
-
-**باستخدام g++ (MinGW / Linux / WSL):**
+### Compile (g++ / MinGW)
 
 ```bash
-g++ *.cpp services/CRUD_service/*.cpp services/saveing_service/*.cpp services/auth_service/*.cpp database/*.cpp .\services\GPA_service\*.cpp  sqlite3.o -o student_app.exe
+g++ main.cpp app.cpp database/database.cpp services/CRUD_service/*.cpp services/saveing_service/*.cpp services/auth_service/*.cpp services/GPA_service/*.cpp sqlite3/sqlite3.c -o student_app.exe -I.
 ```
 
-### التشغيل (Run)
+### Run
 
 ```bash
-./StudentManagement
+./student_app.exe
 ```
 
-على **Windows** (PowerShell أو CMD):
+On **Windows** (PowerShell/CMD):
 
 ```bash
-.\StudentManagement.exe
+.\student_app.exe
 ```
 
-> **ملاحظة:** نفّذ أوامر التجميع والتشغيل من مجلد المشروع `StudentManagement`.
+> Run from the project root directory.
 
-## مخطط الانسياب — كيف يعمل التطبيق
+## Database Schema & Flowchart
+
+### Entity Relationship Diagram
 
 ```mermaid
-flowchart TD
-    Start([البداية]) --> Main[main]
-    Main --> Run[run]
-    Run --> Init[تهيئة: متجه الطلاب، متغير الاختيار]
-    Init --> Menu[عرض القائمة]
+erDiagram
+    Users ||--o{ UserStudentLink : "has"
+    Students ||--o{ StudentCourses : "enrolled in"
+    Courses ||--o{ StudentCourses : "has grades"
     
-    Menu --> Choice{اختيار المستخدم}
+    Users {
+        int UserID PK
+        string Username UK
+        string Password
+        string Role
+    }
     
-    Choice -->|1| Add[إضافة طالب]
-    Choice -->|2| Show[عرض الطلاب]
-    Choice -->|3| Search[البحث برقم الهوية]
-    Choice -->|4| Delete[حذف طالب]
-    Choice -->|5| Update[تحديث طالب]
-    Choice -->|6| Save[حفظ في CSV]
-    Choice -->|7| Import[استيراد من CSV]
-    Choice -->|0| Exit([الخروج])
-    Choice -->|غير صالح| Invalid[عرض رسالة خطأ]
+    Students {
+        int StudentID PK
+        string Name
+        int Age
+        string Level
+    }
     
-    Add --> AddInput[إدخال الرقم، الاسم، العمر، المستوى]
-    AddInput --> CheckID{الرقم فريد؟}
-    CheckID -->|لا| AddInput
-    CheckID -->|نعم| PushAdd[إضافة للمتجه]
-    PushAdd --> SortAdd[الترتيب برقم الهوية]
-    SortAdd --> Menu
+    Courses {
+        int CourseID PK
+        string CourseName
+        int Credits
+    }
     
-    Show --> PrintAll[عرض جميع الطلاب في جدول]
-    PrintAll --> Menu
-    
-    Search --> SearchID[إدخال الرقم]
-    SearchID --> BinarySearch[البحث الثنائي]
-    BinarySearch --> Found1{تم العثور؟}
-    Found1 -->|نعم| Display1[عرض بيانات الطالب]
-    Found1 -->|لا| Retry1[طلب رقم آخر]
-    Display1 --> Menu
-    Retry1 --> SearchID
-    
-    Delete --> DeleteID[إدخال الرقم]
-    DeleteID --> FindDel[البحث عن موقع الطالب]
-    FindDel --> Erase[إزالته من المتجه]
-    Erase --> ShowAfter[عرض القائمة المحدثة]
-    ShowAfter --> Menu
-    
-    Update --> UpdateID[إدخال الرقم]
-    UpdateID --> FindUpd[البحث عن موقع الطالب]
-    FindUpd --> UpdChoice{تحديث الحقل}
-    UpdChoice -->|1| UpdName[تحديث الاسم]
-    UpdChoice -->|2| UpdAge[تحديث العمر]
-    UpdChoice -->|3| UpdLevel[تحديث المستوى]
-    UpdChoice -->|0| Menu
-    UpdName --> Menu
-    UpdAge --> Menu
-    UpdLevel --> Menu
-    
-    Save --> Export[كتابة الطلاب إلى students_data.csv]
-    Export --> Menu
-    
-    Import --> Load[قراءة من students_data.csv]
-    Load --> Parse[تحليل وإضافة للمتجه]
-    Parse --> Menu
-    
-    Invalid --> Menu
+    StudentCourses {
+        int StudentID FK
+        int CourseID FK
+        float Grade
+    }
 ```
 
-## التدفق الرئيسي المبسط
+### Database Tables Structure
+
+```mermaid
+flowchart TB
+    subgraph Tables["Database Tables (system_data.db)"]
+        Users["Users<br/>UserID (PK)<br/>Username (UNIQUE)<br/>Password<br/>Role"]
+        Students["Students<br/>StudentID (PK)<br/>Name<br/>Age<br/>Level"]
+        Courses["Courses<br/>CourseID (PK)<br/>CourseName<br/>Credits"]
+        StudentCourses["StudentCourses<br/>StudentID (FK)<br/>CourseID (FK)<br/>Grade"]
+    end
+    
+    Students -->|"1:N"| StudentCourses
+    Courses -->|"1:N"| StudentCourses
+    StudentCourses -->|"N:1"| Students
+    StudentCourses -->|"N:1"| Courses
+```
+
+### Data Flow — How the Database is Used
 
 ```mermaid
 flowchart LR
-    A([البداية]) --> B[main]
-    B --> C[run]
-    C --> D[عرض القائمة]
-    D --> E{الاختيار}
-    E --> F[عمليات CRUD]
-    E --> G[حفظ/استيراد]
-    E --> H([الخروج])
-    F --> D
-    G --> D
+    subgraph Auth["Authentication"]
+        A1[Login/Register] --> Users[(Users Table)]
+    end
+    
+    subgraph Add["Add Student"]
+        A2[Add Student] --> Students[(Students)]
+        A2 --> Courses[(Courses)]
+        A2 --> SC[(StudentCourses)]
+    end
+    
+    subgraph Read["Read Data"]
+        Students --> L1[Load Students]
+        Courses --> L1
+        SC --> L1
+        L1 --> Display[Show/Search]
+    end
+    
+    subgraph Update["Update"]
+        U1[Update Service] --> Students
+    end
+    
+    subgraph Delete["Delete"]
+        D1[Delete Service] --> Students
+    end
 ```
 
-## نموذج البيانات
+### Table Details
 
-| الحقل       | النوع   | الوصف    |
-|------------|--------|----------|
-| `id`       | int    | رقم هوية الطالب الفريد |
-| `name`     | string | اسم الطالب   |
-| `age`      | int    | عمر الطالب    |
-| `study_level` | string | المستوى الدراسي (مثل بكالوريوس، ماجستير) |
+| Table | Column | Type | Description |
+|-------|--------|------|-------------|
+| **Users** | UserID | INTEGER PK | Auto-increment |
+| | Username | TEXT UNIQUE | Login name |
+| | Password | TEXT | Password |
+| | Role | TEXT | Admin / Staff |
+| **Students** | StudentID | INTEGER PK | Student ID |
+| | Name | TEXT | Student name |
+| | Age | INTEGER | Age |
+| | Level | TEXT | Study level |
+| **Courses** | CourseID | INTEGER PK | Auto-increment |
+| | CourseName | TEXT | Course name |
+| | Credits | INTEGER | Default 3 |
+| **StudentCourses** | StudentID | INTEGER FK | → Students |
+| | CourseID | INTEGER FK | → Courses |
+| | Grade | REAL | Course grade |
 
-## تنسيق ملف CSV
+## Application Flowchart
 
-يستخدم ملف `students_data.csv` التنسيق التالي:
+```mermaid
+flowchart TD
+    Start([Start]) --> Init[Initialize DB]
+    Init --> AuthMenu{1. Login / 2. Create Account}
+    AuthMenu -->|2| Register[Register User]
+    Register --> AuthMenu
+    AuthMenu -->|1| Login[Enter Credentials]
+    Login --> Check{Valid?}
+    Check -->|No| Deny[Access Denied]
+    Check -->|Yes| Load[Load Students from DB]
+    Load --> Menu[Main Menu]
+    
+    Menu --> Choice{Choice}
+    Choice -->|1| Add[Add Student + 5 Courses]
+    Choice -->|2| Show[Show All Students]
+    Choice -->|3| Search[Search by ID]
+    Choice -->|4| Delete[Delete Student - Admin only]
+    Choice -->|5| Update[Update Student]
+    Choice -->|0| Exit([Exit])
+    
+    Add --> DB1[(Students + Courses + StudentCourses)]
+    Delete --> DB1
+    Update --> DB1
+    Search --> DB1
+    Show --> Display[Display Table]
+    
+    Add --> Load
+    Delete --> Load
+    Update --> Load
+    Display --> Menu
+```
+
+## Data Model (C++)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | int | Student ID |
+| `name` | string | Student name |
+| `age` | int | Age |
+| `study_level` | string | Level (e.g. Bachelor, Master) |
+| `course[5]` | course[] | Up to 5 courses |
+| `gpa` | double | Calculated GPA |
+
+### Course struct
+
+| Field | Type |
+|-------|------|
+| `course_name` | string |
+| `grade` | double |
+| `credits` | int (default 3) |
+
+## CSV Format
 
 ```
 ID,Name,Age,Level
-1,أحمد محمد,20,بكالوريوس
-2,فاطمة علي,22,ماجستير
+1,John Doe,20,Bachelor
+2,Jane Smith,22,Master
 ```
